@@ -5,13 +5,19 @@ import Footer from '../Components/Footer';
 
 const HomeLayout = () => {
     return (
-        <div>
-            <Navbar></Navbar>
+        <>
+            <header>
+                <Navbar></Navbar>
+            </header>
 
-            <Outlet></Outlet>
+            <main>
+                <Outlet></Outlet>
+            </main>
 
-            <Footer></Footer>
-        </div>
+            <footer>
+                <Footer></Footer>
+            </footer>
+        </>
     );
 };
 

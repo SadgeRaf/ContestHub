@@ -5,31 +5,22 @@ import { toast } from 'react-toastify';
 import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import { FaGoogle } from "react-icons/fa";
+import { useForm } from 'react-hook-form';
 
 
 const Register = () => {
   const { createUser, setUser, updateUser, googleSignUp } = use(AuthContext);
-  const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const photo = form.photo.value;
+  const {register,handleSubmit,formState: {errors}} = useForm();
 
-    if (!/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/.test(password)) {
-      setPasswordError('Password must contain at least one uppercase letter, one lowercase letter, and be at least 6 characters long.');
-      return;
-    }
+  const handleRegister = (data) => {
+    const name = data.name;
+    const photo = data.photo;
 
-    setPasswordError('');
-
-    createUser(email, password)
+    createUser(data.email, data.password)
       .then((res) => {
         const user = res.user;
         updateUser({ displayName: name, photoURL: photo }).then(() => {
@@ -38,9 +29,7 @@ const Register = () => {
         }).catch((error) => {
           toast.error(error.message);
         });
-
-        toast.success('✅ Account registered successfully!');
-        form.reset();
+        toast.success('Account registered successfully!');
       })
       .catch((error) => {
         toast.error(error.message);
@@ -69,53 +58,61 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 mt-20">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-sm p-8 border border-gray-200">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Create an Account 🐾
+          Create an Account
         </h2>
 
-        <form onSubmit={handleRegister} className="space-y-4">
+        <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
           <div>
             <label className="label text-gray-600">Full Name</label>
             <input
-              name="name"
+              {...register('name', {
+                required: true,
+              })}
               type="text"
               className="input input-bordered w-full"
               placeholder="Your name"
-              required
             />
+            {errors.name && <p className='text-red-500'>Name is required</p>}
           </div>
 
           <div>
             <label className="label text-gray-600">Email</label>
             <input
-              name="email"
+              {...register('email', {
+                required: true,
+              })}
               type="email"
               className="input input-bordered w-full"
               placeholder="Your email"
-              required
             />
+            {errors.email?.type==='required' && <p className='text-red-500'>Email is required</p>}
           </div>
 
           <div>
             <label className="label text-gray-600">Photo URL</label>
             <input
-              name="photo"
+              {...register('photo', {
+                required: false,
+              })}
               type="text"
               className="input input-bordered w-full"
               placeholder="Profile picture link"
-              required
             />
+            {errors.photo && <p className='text-red-500'>Photo URL is required</p>}
           </div>
 
           <div className="relative">
             <label className="label text-gray-600">Password</label>
             <input
-              name="password"
+              {...register('password', {
+                required: true,
+                minLength: 6,
+                pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+              })}
               type={showPassword ? 'text' : 'password'}
               className="input input-bordered w-full pr-10"
               placeholder="Create a password"
-              required
             />
-
 
             <button
               type="button"
@@ -124,10 +121,11 @@ const Register = () => {
               {showPassword ? <IoIosEyeOff /> : <FaEye />}
             </button>
 
-            {passwordError && (
-              <p className="text-red-500 text-sm mt-1">{passwordError}</p>
-            )}
-          </div>
+            {errors.password?.type==='minLength' && <p className='text-red-500'>Password must be atleast 6 characters long</p>}
+            {errors.password?.type==='required' && <p className='text-red-500'>Password is Required!</p>}
+            {errors.password?.type==='pattern' && <p className='text-red-500'>Password must contain at least one uppercase & one lowercase letter</p>}
+
+            </div>
 
           <button type="submit" className="btn btn-neutral w-full mt-2">
             Register
