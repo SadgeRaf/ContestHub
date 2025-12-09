@@ -9,30 +9,32 @@ const Marquee = ({ text = "biggest-contests" }) => {
     const container = containerRef.current;
     const content = contentRef.current;
 
-    // Clear previous content and repeat text
-    const repeatCount = 20;
+    // Clear previous content
     content.innerHTML = "";
-    for (let i = 0; i < repeatCount; i++) {
+
+    // Dynamically repeat text to fill screen width
+    const containerWidth = container.offsetWidth;
+    let contentWidth = 0;
+    let spanCount = 0;
+
+    while (contentWidth < containerWidth * 2) {
       const span = document.createElement("span");
       span.textContent = text + " ";
-      span.className = "mx-4";
+      span.className = "mx-4 inline-block";
+      span.style.transform = "rotateX(180deg)"; // flip vertically
       content.appendChild(span);
+
+      contentWidth = content.scrollWidth;
+      spanCount++;
+      if (spanCount > 1000) break; // safety to avoid infinite loop
     }
 
-    // Duplicate for seamless loop
-    const clone = content.cloneNode(true);
-    container.appendChild(clone);
-
-    // Animate left-to-right
-    const totalWidth = content.offsetWidth;
-    gsap.to(container.children, {
-      x: `+=${totalWidth}`, // left-to-right
+    // Animate left-to-right infinitely
+    gsap.to(content, {
+      x: "+=" + content.scrollWidth / 2, // move half of content width
       duration: 20,
       ease: "linear",
       repeat: -1,
-      modifiers: {
-        x: (x) => `${parseFloat(x) % totalWidth}px`,
-      },
     });
   }, [text]);
 
@@ -40,12 +42,10 @@ const Marquee = ({ text = "biggest-contests" }) => {
     <div
       ref={containerRef}
       className="overflow-hidden whitespace-nowrap w-full py-6 flex"
-      style={{ perspective: "1000px" }} // needed for rotateX
     >
       <div
         ref={contentRef}
         className="flex text-5xl font-bold text-white whitespace-nowrap"
-        style={{ transform: "rotateX(180deg)" }} // flip only the content
       ></div>
     </div>
   );

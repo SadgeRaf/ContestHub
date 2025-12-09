@@ -26,15 +26,17 @@ const WinnerAdvertisement = () => {
   const totalWinners = winners.length;
 
   return (
-    <section className="relative bg-gradient-to-r from-purple-600 to-pink-500 py-16 text-white overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="relative py-16 text-white overflow-hidden">
+      <div className="max-w-6xl text-left px-4">
         {/* Header */}
-        <h2 className="text-4xl font-bold text-center mb-8">
-          🎉 Recent Winners
+        <div className="flex items-center justify-around">
+          <h2 className="text-4xl font-bold mb-8">
+           Recent Winners
         </h2>
-        <p className="text-center mb-12 text-lg">
+        <p className="mb-8 text-lg">
           Total Winners: {totalWinners} | Total Prize Money: ${totalPrize}
         </p>
+        </div>
 
         {/* Winners Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

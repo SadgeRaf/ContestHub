@@ -1,20 +1,46 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Hero from "../Components/Hero";
 import useAxios from "../hooks/useAxios";
 import Card from '../Components/Card'
 import Marquee from "../Components/MArquee";
 import MarqueeReversed from '../Components/MarqueeReversed'
+import WinnerAdvertisement from "../Components/WinnerAdvertisment";
+import WhyChooseUs from "../Components/WhyChooseUs";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
+gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
     const axiosSecure = useAxios();
+    const heroRef = useRef();
+
+   
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    gsap.from(heroRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: heroRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play none none none",
+        markers: true, // optional, for debugging
+      },
+    });
+  }, []);
 
     // Fetch contests with react-query
     const { data: contests = [], isLoading, isError, error } = useQuery({
         queryKey: ["contests"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/contests");
+            const res = await axiosSecure.get("/bigcontests");
             console.log(res.data)
             return res.data;
         },
@@ -24,10 +50,12 @@ const Home = () => {
     if (isError) return <p className="text-center mt-10 text-red-500">Error: {error.message}</p>;
 
     return (
-        <div>
-            <Hero />
+        <div >
+            <div>
+                <Hero />
+            </div>
             <Marquee text="biggest-contests" />
-            <div className="max-w-6xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div  className="max-w-6xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                 {contests.length > 0 ? (
                     contests.map((contest) => <Card key={contest._id} contest={contest} />)
                 ) : (
@@ -35,6 +63,13 @@ const Home = () => {
                 )}
             </div>
             <MarqueeReversed text="biggest-contests" />
+            <h1  ref={heroRef} className="font-bold text-5xl mb-5 text-center">Winners</h1>
+            <div >
+                <WinnerAdvertisement></WinnerAdvertisement>
+            </div>
+            <div className="mt-10">
+                <WhyChooseUs></WhyChooseUs>
+            </div>
         </div>
     );
 };

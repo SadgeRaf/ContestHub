@@ -5,6 +5,9 @@ import AuthLayout from "../Layout/AuthLayout"
 import Login from "../Pages/Login"
 import Registration from "../Pages/Registration"
 import Error from '../Pages/Home'
+import AllContests from "../Pages/AllContests"
+import Contest from "../Pages/Contest"
+import PrivateRoute from '../Provider/PrivateRoute'
 
 const router = createBrowserRouter(
     [
@@ -15,6 +18,16 @@ const router = createBrowserRouter(
                 {
                     index: true,
                     element: <Home></Home>
+                },
+                {
+                    path: 'allcontests',
+                    element: <AllContests></AllContests>
+                },
+                {
+                    path: `contest/:id`,
+                    element: <PrivateRoute>
+                        <Contest></Contest>
+                    </PrivateRoute>
                 }
             ]
         },
