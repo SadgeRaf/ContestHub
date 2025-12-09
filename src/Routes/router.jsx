@@ -8,6 +8,9 @@ import Error from '../Pages/Home'
 import AllContests from "../Pages/AllContests"
 import Contest from "../Pages/Contest"
 import PrivateRoute from '../Provider/PrivateRoute'
+import DashboardLayout from '../Layout/DashboardLayout'
+import DashboardHome from "../Pages/DashboardHome"
+import AddContest from "../Pages/AddContest"
 
 const router = createBrowserRouter(
     [
@@ -28,6 +31,22 @@ const router = createBrowserRouter(
                     element: <PrivateRoute>
                         <Contest></Contest>
                     </PrivateRoute>
+                },
+                {
+                    path: 'addcontest',
+                    element: <PrivateRoute>
+                        <AddContest></AddContest>
+                    </PrivateRoute>
+                }
+            ]
+        },
+        {
+            path: '/dashboard',
+            element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+            children: [
+                {
+                    index: true,
+                    element:<DashboardHome></DashboardHome>,
                 }
             ]
         },

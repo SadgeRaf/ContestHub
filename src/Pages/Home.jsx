@@ -4,7 +4,6 @@ import Hero from "../Components/Hero";
 import useAxios from "../hooks/useAxios";
 import Card from '../Components/Card'
 import Marquee from "../Components/MArquee";
-import MarqueeReversed from '../Components/MarqueeReversed'
 import WinnerAdvertisement from "../Components/WinnerAdvertisment";
 import WhyChooseUs from "../Components/WhyChooseUs";
 import { useGSAP } from "@gsap/react";
@@ -19,8 +18,6 @@ const Home = () => {
 
    
   useEffect(() => {
-    if (!heroRef.current) return;
-
     gsap.from(heroRef.current, {
       y: 50,
       opacity: 0,
@@ -31,7 +28,6 @@ const Home = () => {
         start: "top 80%",
         end: "bottom 20%",
         toggleActions: "play none none none",
-        markers: true, // optional, for debugging
       },
     });
   }, []);
@@ -62,11 +58,12 @@ const Home = () => {
                     <p>No contests available.</p>
                 )}
             </div>
-            <MarqueeReversed text="biggest-contests" />
-            <h1  ref={heroRef} className="font-bold text-5xl mb-5 text-center">Winners</h1>
-            <div >
+            <Marquee text="biggest-contests" />
+            <h1 className="font-bold text-5xl mb-5 text-center">Winners</h1>
+            <div ref={heroRef}>
                 <WinnerAdvertisement></WinnerAdvertisement>
             </div>
+            <h1>About Our Platform</h1>
             <div className="mt-10">
                 <WhyChooseUs></WhyChooseUs>
             </div>

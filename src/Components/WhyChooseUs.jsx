@@ -23,7 +23,6 @@ const WhyChooseUs = () => {
         scrub: 1,
         start: 'top top',
         end: () => `+=${totalWidth - viewportWidth}`,
-        markers: true,
       },
     });
   }, []);
