@@ -25,12 +25,15 @@ const AddContest = () => {
       banner: data.banner,
       type: data.type,
       participants: 0,
+      registrationFee: Number(data.registrationFee),   // added
       description: data.description,
       taskDetails: data.taskDetails,
-      prize: data.prize,
+      prize: Number(data.prize),
       deadline: data.deadline,
       winner: null,
       submissions: [],
+      registeredUsers: [],
+      contestStatus: 'open'
     };
 
     try {
@@ -58,6 +61,7 @@ const AddContest = () => {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
         {/* Name */}
         <div>
           <label className="font-semibold">Contest Name</label>
@@ -67,10 +71,10 @@ const AddContest = () => {
             placeholder="Contest Name"
             className="input input-bordered w-full"
           />
-          {errors.name && <p className="text-red-500 text-sm">This field is required</p>}
+          {errors.name && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
-        {/* Banner Image URL */}
+        {/* Banner */}
         <div>
           <label className="font-semibold">Banner Image URL</label>
           <input
@@ -79,10 +83,10 @@ const AddContest = () => {
             placeholder="https://example.com/banner.jpg"
             className="input input-bordered w-full"
           />
-          {errors.banner && <p className="text-red-500 text-sm">This field is required</p>}
+          {errors.banner && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
-        {/* Contest Type */}
+        {/* Type */}
         <div>
           <label className="font-semibold">Contest Type</label>
           <input
@@ -91,7 +95,19 @@ const AddContest = () => {
             placeholder="art, programming, robotics..."
             className="input input-bordered w-full"
           />
-          {errors.type && <p className="text-red-500 text-sm">This field is required</p>}
+          {errors.type && <p className="text-red-500 text-sm">Required</p>}
+        </div>
+
+        {/* Registration Fee */}
+        <div>
+          <label className="font-semibold">Registration Fee</label>
+          <input
+            {...register("registrationFee", { required: true })}
+            type="number"
+            placeholder="Enter fee"
+            className="input input-bordered w-full"
+          />
+          {errors.registrationFee && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
         {/* Prize */}
@@ -99,11 +115,11 @@ const AddContest = () => {
           <label className="font-semibold">Prize Money</label>
           <input
             {...register("prize", { required: true })}
-            type="text"
-            placeholder="$1500"
+            type="number"
+            placeholder="1500"
             className="input input-bordered w-full"
           />
-          {errors.prize && <p className="text-red-500 text-sm">This field is required</p>}
+          {errors.prize && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
         {/* Deadline */}
@@ -114,7 +130,7 @@ const AddContest = () => {
             type="datetime-local"
             className="input input-bordered w-full"
           />
-          {errors.deadline && <p className="text-red-500 text-sm">This field is required</p>}
+          {errors.deadline && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
         {/* Description */}
@@ -122,13 +138,10 @@ const AddContest = () => {
           <label className="font-semibold">Full Description</label>
           <textarea
             {...register("description", { required: true })}
-            placeholder="Describe the contest..."
             className="textarea textarea-bordered w-full"
             rows={3}
           ></textarea>
-          {errors.description && (
-            <p className="text-red-500 text-sm">This field is required</p>
-          )}
+          {errors.description && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
         {/* Task Details */}
@@ -136,21 +149,13 @@ const AddContest = () => {
           <label className="font-semibold">Task Details</label>
           <textarea
             {...register("taskDetails", { required: true })}
-            placeholder="Explain what participants need to submit..."
             className="textarea textarea-bordered w-full"
             rows={3}
           ></textarea>
-          {errors.taskDetails && (
-            <p className="text-red-500 text-sm">This field is required</p>
-          )}
+          {errors.taskDetails && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
-        {/* Submit button */}
-        <button
-          type="submit"
-          className="btn btn-primary w-full"
-          disabled={loading}
-        >
+        <button type="submit" className="btn btn-primary w-full" disabled={loading}>
           {loading ? "Creating..." : "Create Contest"}
         </button>
       </form>

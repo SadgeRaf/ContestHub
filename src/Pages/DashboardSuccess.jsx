@@ -1,0 +1,27 @@
+import React, { useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router';
+import useAxios from '../hooks/useAxios';
+
+const DashboardSuccess = () => {
+    const axiosSecure = useAxios();
+    const [searchParams] = useSearchParams();
+    const sessionId = searchParams.get('session_id');
+    const calledRef = useRef(false); // track if effect has run
+
+    useEffect(() => {
+        if(sessionId && !calledRef.current){
+            calledRef.current = true;
+            axiosSecure.patch(`/verify-payment?session_id=${sessionId}`)
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
+        }
+    }, [sessionId, axiosSecure]);
+
+    return (
+        <div>
+            <h1>Payment is successful</h1>
+        </div>
+    );
+};
+
+export default DashboardSuccess;

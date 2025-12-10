@@ -9,8 +9,10 @@ import AllContests from "../Pages/AllContests"
 import Contest from "../Pages/Contest"
 import PrivateRoute from '../Provider/PrivateRoute'
 import DashboardLayout from '../Layout/DashboardLayout'
-import DashboardHome from "../Pages/DashboardHome"
 import AddContest from "../Pages/AddContest"
+import DashboardSuccess from "../Pages/DashboardSuccess"
+import SearchPage from "../Pages/SearchPAge"
+import RegisteredContests from "../Pages/RegisteredContests"
 
 const router = createBrowserRouter(
     [
@@ -37,7 +39,12 @@ const router = createBrowserRouter(
                     element: <PrivateRoute>
                         <AddContest></AddContest>
                     </PrivateRoute>
+                },
+                {
+                    path: "/search/:query",
+                    element: <SearchPage />
                 }
+
             ]
         },
         {
@@ -45,8 +52,12 @@ const router = createBrowserRouter(
             element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
             children: [
                 {
-                    index: true,
-                    element:<DashboardHome></DashboardHome>,
+                    path: 'success',
+                    element: <DashboardSuccess></DashboardSuccess>
+                },
+                {
+                    path: 'my-registered-contests',
+                    element: <RegisteredContests></RegisteredContests>
                 }
             ]
         },

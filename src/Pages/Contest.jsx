@@ -21,10 +21,10 @@ const Contest = () => {
 
   const handlePayment = async () => {
   const paymentInfo = {
-    prize: contest.prize,
-    name: contest.name,      // must match backend
+    fee: contest.registrationFee,
+    name: contest.name,      
     email: user.email,
-    contestId: contest._id,  // must match backend
+    contestId: contest._id, 
   };
 
   try {
@@ -41,7 +41,7 @@ const Contest = () => {
   if (isError) return <p className="text-center mt-10 text-red-500">{error.message}</p>;
   if (!contest) return <p className="text-center mt-10">Contest not found.</p>;
 
-  const isClosed = contest.status === "registered" || contest.status === "ended";
+  const isClosed = contest.contestStatus === "registered" || contest.status === "ended";
 
   return (
     <div className="max-w-4xl mx-auto mt-25 px-4 mb-10">
@@ -57,7 +57,7 @@ const Contest = () => {
       {/* Contest Info */}
       <h1 className="text-3xl font-bold mb-4">{contest.name}</h1>
       <p className="text-gray-700 mb-2">Prize: <span className="font-semibold">{contest.prize}</span></p>
-      <p className="text-gray-700 mb-2">Participants: <span className="font-semibold">{contest.participantsCount || 0}</span></p>
+      <p className="text-gray-700 mb-2">Participants: <span className="font-semibold">{contest.participants}</span></p>
       <p className="text-gray-700 mb-4">Deadline: <span className="font-semibold">{contest.deadline}</span></p>
 
       {/* Description & Task */}
@@ -85,7 +85,7 @@ const Contest = () => {
         <button className="btn btn-disabled">It's over</button>
       ) : (
         <button onClick={()=>handlePayment(contest)} className="btn">
-          Pay {contest.prize} to register
+          Pay {contest.registrationFee}$ to register
         </button>
       )}
 

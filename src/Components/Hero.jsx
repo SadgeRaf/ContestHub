@@ -1,11 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 const Hero = () => {
     const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        console.log(data)
+        const query = data.search.trim();
+
+        if (!query) return;
+
+        navigate(`/search/${encodeURIComponent(query)}`);
     };
 
     return (

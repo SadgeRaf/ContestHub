@@ -9,6 +9,7 @@ import WhyChooseUs from "../Components/WhyChooseUs";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import { Link } from "react-router";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ const Home = () => {
                     <p>No contests available.</p>
                 )}
             </div>
+            <Link to='/allcontests' className="btn">See ALL</Link>
             <Marquee text="biggest-contests" />
             <h1 className="font-bold text-5xl mb-5 text-center">Winners</h1>
             <div ref={heroRef}>
