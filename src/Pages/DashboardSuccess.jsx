@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import useAxios from '../hooks/useAxios';
 
 const DashboardSuccess = () => {
@@ -20,6 +20,8 @@ const DashboardSuccess = () => {
     return (
         <div>
             <h1>Payment is successful</h1>
+            <h1>Please head on over to your registered contest(s) page to view!</h1>
+            <Link to='/dashboard/my-registered-contests'>Registered Contests</Link>
         </div>
     );
 };

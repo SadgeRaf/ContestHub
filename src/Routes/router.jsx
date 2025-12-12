@@ -13,6 +13,10 @@ import AddContest from "../Pages/AddContest"
 import DashboardSuccess from "../Pages/DashboardSuccess"
 import SearchPage from "../Pages/SearchPAge"
 import RegisteredContests from "../Pages/RegisteredContests"
+import Profile from "../Pages/Profile"
+import Creator from "../Pages/Creator"
+import WinningContest from "../Pages/WinningContest"
+import CreatorApproval from "../Pages/CreatorApproval"
 
 const router = createBrowserRouter(
     [
@@ -43,6 +47,12 @@ const router = createBrowserRouter(
                 {
                     path: "/search/:query",
                     element: <SearchPage />
+                },
+                {
+                    path:'creator',
+                    element:<PrivateRoute>
+                        <Creator></Creator>
+                    </PrivateRoute>
                 }
 
             ]
@@ -58,6 +68,18 @@ const router = createBrowserRouter(
                 {
                     path: 'my-registered-contests',
                     element: <RegisteredContests></RegisteredContests>
+                },
+                {
+                    path: 'my-winning-contests',
+                    element: <WinningContest></WinningContest>
+                },
+                {
+                    path: 'creatior-approval',
+                    element: <CreatorApproval></CreatorApproval>
+                },
+                {
+                    path: 'profile',
+                    element: <Profile></Profile>
                 }
             ]
         },

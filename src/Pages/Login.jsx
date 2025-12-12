@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { useState, use } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
 import { toast } from 'react-toastify';
@@ -6,12 +6,14 @@ import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
+import useAxios from '../hooks/useAxios';
 
 const Login = () => {
   const { logIn, setUser, googleSignUp } = use(AuthContext);
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const axiosSecure = useAxios();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,20 +23,50 @@ const Login = () => {
     formState: { errors }
   } = useForm();
 
-  const handleLogin = (data) => {
+  // =========================================
+  // EMAIL/PASSWORD LOGIN
+  // =========================================
+  const handleLogin = async (data) => {
     const { email, password } = data;
 
-    logIn(email, password)
-      .then((res) => {
-        const user = res.user;
-        setUser(user);
-        toast.success("Logged in Successfully!");
-        navigate(`${location.state ? location.state : '/'}`);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-        setPasswordError(error.message);
-      });
+    try {
+      const res = await logIn(email, password);
+      const user = res.user;
+
+      setUser(user);
+      toast.success("Logged in successfully!");
+      navigate(location.state || "/");
+    } catch (error) {
+      toast.error(error.message);
+      setPasswordError(error.message);
+    }
+  };
+
+  // =========================================
+  // GOOGLE LOGIN
+  // =========================================
+  const handleGoogle = async () => {
+    try {
+      const res = await googleSignUp();
+      const user = res.user;
+
+      // Save Google user to DB
+      const savedUser = {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "user",
+        createdAt: new Date()
+      };
+
+      await axiosSecure.post("/users", savedUser);
+
+      setUser(user);
+      toast.success("Signed in with Google!");
+      navigate(location.state || "/");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const handleToggle = (e) => {
@@ -42,28 +74,17 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleGoogle = () => {
-    googleSignUp()
-      .then((res) => {
-        const user = res.user;
-        setUser(user);
-        toast.success("Signed in with Google!");
-        navigate(`${location.state ? location.state : '/'}`);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 mt-20">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-sm p-8 border border-gray-200">
+        
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Welcome Back
         </h2>
 
         <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
 
+          {/* EMAIL */}
           <div>
             <label className="label text-gray-600">Email</label>
             <input
@@ -77,6 +98,7 @@ const Login = () => {
             )}
           </div>
 
+          {/* PASSWORD */}
           <div className="relative">
             <label className="label text-gray-600">Password</label>
             <input
@@ -113,17 +135,20 @@ const Login = () => {
             )}
           </div>
 
+          {/* FORGOT */}
           <div className="flex justify-between items-center">
             <button className="text-blue-500 text-sm hover:underline">
               Forgot Password?
             </button>
           </div>
 
+          {/* LOGIN BUTTON */}
           <button type="submit" className="btn btn-neutral w-full mt-2">
             Login
           </button>
         </form>
 
+        {/* SIGN UP LINK */}
         <p className="text-center text-sm text-gray-500 mt-6">
           Don’t have an account?{" "}
           <Link to="/auth/registration" className="text-blue-500 hover:underline">
@@ -131,12 +156,17 @@ const Login = () => {
           </Link>
         </p>
 
-        <div className="flex justify-center items-center flex-row relative">
-          <button onClick={handleGoogle} className="btn w-full mt-2">
-            Sign in with <span className="text-blue-500">Google</span>
+        {/* GOOGLE LOGIN */}
+        <div className="flex justify-center items-center">
+          <button
+            onClick={handleGoogle}
+            className="btn w-full mt-2 flex items-center gap-2"
+          >
+            <FaGoogle />
+            Sign in with Google
           </button>
-          <FaGoogle className="absolute left-57 top-5" />
         </div>
+
       </div>
     </div>
   );

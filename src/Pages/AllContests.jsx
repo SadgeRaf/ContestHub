@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import Card from '../Components/Card';
@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 
 const AllContests = () => {
   const axiosSecure = useAxios();
+  const [filterType, setFilterType] = useState('all'); // state for filtering
 
   const { data: contests = [], isLoading, isError, error } = useQuery({
     queryKey: ["contests"],
@@ -15,28 +16,43 @@ const AllContests = () => {
     },
   });
 
-  if (isLoading) {
-    return <p className="text-center mt-20 text-lg font-medium">Loading contests...</p>;
-  }
+  if (isLoading) return <p className="text-center mt-20 text-lg font-medium">Loading contests...</p>;
+  if (isError) return <p className="text-center mt-20 text-red-500 text-lg font-medium">Error: {error.message}</p>;
+  if (contests.length === 0) return <p className="text-center mt-20 text-lg font-medium">No contests available.</p>;
 
-  if (isError) {
-    return <p className="text-center mt-20 text-red-500 text-lg font-medium">Error: {error.message}</p>;
-  }
+  // Get unique types for dropdown
+  const contestTypes = ["all", ...new Set(contests.map(c => c.type))];
 
-  if (contests.length === 0) {
-    return <p className="text-center mt-20 text-lg font-medium">No contests available.</p>;
-  }
+  // Filter contests by selected type
+  const filteredContests = filterType === 'all'
+    ? contests
+    : contests.filter(c => c.type === filterType);
 
   return (
     <div className="mt-20 mb-16 px-4">
       {/* Heading */}
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-        All Ongoing Contests <span className="text-primary">({contests.length})</span>
+        All Ongoing Contests <span className="text-primary">({filteredContests.length})</span>
       </h1>
+
+      {/* Filter Dropdown */}
+      <div className="flex justify-center mb-6">
+        <select
+          className="border px-4 py-2 rounded-lg"
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+        >
+          {contestTypes.map((type) => (
+            <option key={type} value={type}>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Contest Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
-        {contests.map((contest) => (
+        {filteredContests.map((contest) => (
           <Card key={contest._id} contest={contest} />
         ))}
       </div>

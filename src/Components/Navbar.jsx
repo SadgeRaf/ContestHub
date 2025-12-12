@@ -17,6 +17,7 @@ const Navbar = () => {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/allcontests">All Contests</Link></li>
             <li><Link to="/addcontest">Add a Contest</Link></li>
+            <li><Link to="/creator">Become a Creator</Link></li>
             <li><Link to="/dashboard">Dashboard</Link></li>
         </>
     );
@@ -89,7 +90,7 @@ const Navbar = () => {
                                 {user.displayName || "User"}
                             </li>
 
-                            <li><Link to="/profile">Profile</Link></li>
+                            <li><Link to="/dashboard/profile">Profile</Link></li>
                             <li><Link to="/dashboard">Dashboard</Link></li>
 
                             <li><button onClick={handleLogout} className="text-red-500">Logout</button></li>
