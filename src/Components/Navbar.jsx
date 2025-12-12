@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 import { toast } from "react-toastify";
+import useRole from "../hooks/useRole";
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
-
+    const {role} = useRole();
     const handleLogout = () => {
         logOut()
             .then(() => {})
@@ -16,7 +17,10 @@ const Navbar = () => {
         <>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/allcontests">All Contests</Link></li>
-            <li><Link to="/addcontest">Add a Contest</Link></li>
+            {
+                role === 'creator' || role === 'admin' &&
+                <li><Link to="/addcontest">Add a Contest</Link></li>
+            }
             <li><Link to="/creator">Become a Creator</Link></li>
             <li><Link to="/dashboard">Dashboard</Link></li>
         </>

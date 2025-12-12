@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router';
+import useRole from '../hooks/useRole';
 
 const Layout = () => {
+    const { role } = useRole();
+    console.log(role);
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -32,7 +35,7 @@ const Layout = () => {
                                 </button>
                             </Link>
                         </li>
-                        
+
                         <li>
                             <Link to='/dashboard/my-registered-contests'>
                                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Registered Contests">
@@ -53,24 +56,50 @@ const Layout = () => {
                             </Link>
                         </li>
 
-                        <li>
-                            <Link to='/dashboard/creator-approval'>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Creator-Approval">
-                                    {/* Home icon */}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                                    <span className="is-drawer-close:hidden">Creator Approval</span>
-                                </button>
-                            </Link>
-                        </li>
+                        {
+                            role === 'admin' && <>
+
+                                <li>
+                                    <Link to='/dashboard/creator-approval'>
+                                        <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Creator-Approval">
+                                            {/* Home icon */}
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                            <span className="is-drawer-close:hidden">Creator Approval</span>
+                                        </button>
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link to='/dashboard/users'>
+                                        <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Users">
+                                            {/* Home icon */}
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                            <span className="is-drawer-close:hidden">Users</span>
+                                        </button>
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link to='/dashboard/contest-approval'>
+                                        <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Contest-Approval">
+                                            {/* Home icon */}
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                            <span className="is-drawer-close:hidden">Contest Approval</span>
+                                        </button>
+                                    </Link>
+                                </li>
+
+                            </>
+                        }
 
                         {/* List item */}
                         <li>
                             <Link to='/dashboard/profile'>
-                             <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile">
-                                {/* Settings icon */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                                <span className="is-drawer-close:hidden">My Profile</span>
-                            </button>
+                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile">
+                                    {/* Settings icon */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                                    <span className="is-drawer-close:hidden">My Profile</span>
+                                </button>
                             </Link>
                         </li>
                     </ul>
