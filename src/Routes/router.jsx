@@ -20,6 +20,8 @@ import CreatorApproval from "../Pages/CreatorApproval"
 import Users from "../Pages/Users"
 import ContestApproval from "../Pages/ContestApproval"
 import AdminRoute from "../Provider/AdminRoute"
+import EditContest from "../Pages/EditContest"
+import PickWinner from "../Pages/PickWinner"
 
 const router = createBrowserRouter(
     [
@@ -75,6 +77,14 @@ const router = createBrowserRouter(
                 {
                     path: 'my-winning-contests',
                     element: <WinningContest></WinningContest>
+                },
+                {
+                    path: 'edit-contest',
+                    element: <EditContest></EditContest>
+                },
+                {
+                    path: 'pick-winner',
+                    element: <PickWinner></PickWinner>
                 },
                 {
                     path: 'creator-approval',
