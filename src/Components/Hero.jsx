@@ -1,10 +1,31 @@
-import React from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    const imageContainer = useRef();
+
+    useGSAP(() => {
+        gsap.from(imageContainer.current, {
+            scrollTrigger: {
+                trigger: imageContainer.current,
+                start: 'top 85%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse',
+            },
+            y: 60,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+        })
+    }, []);
 
     const onSubmit = (data) => {
         const query = data.search.trim();
@@ -15,7 +36,7 @@ const Hero = () => {
     };
 
     return (
-        <div
+        <div ref={imageContainer}
             className="hero min-h-screen bg-cover bg-center"
             style={{
                 backgroundImage:
