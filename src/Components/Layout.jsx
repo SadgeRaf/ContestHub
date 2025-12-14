@@ -94,7 +94,7 @@ const Layout = () => {
                         }
 
                         {
-                            role === 'creator' || role === 'admin' && <>
+                            (role === 'creator' || role === 'admin') && <>
                                 <li>
                                     <Link to='/dashboard/edit-contest'>
                                         <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Edit-Contest">

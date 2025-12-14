@@ -18,7 +18,7 @@ const Navbar = () => {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/allcontests">All Contests</Link></li>
             {
-                role === 'creator' || role === 'admin' &&
+                (role === 'creator' || role === 'admin') &&
                 <li><Link to="/addcontest">Add a Contest</Link></li>
             }
             <li><Link to="/creator">Become a Creator</Link></li>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Hero from "../Components/Hero";
 import useAxios from "../hooks/useAxios";
@@ -6,7 +6,6 @@ import Card from '../Components/Card'
 import Marquee from "../Components/MArquee";
 import WinnerAdvertisement from "../Components/WinnerAdvertisment";
 import WhyChooseUs from "../Components/WhyChooseUs";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Link } from "react-router";
@@ -16,22 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
 const Home = () => {
     const axiosSecure = useAxios();
     const heroRef = useRef();
-
-   
-  useEffect(() => {
-    gsap.from(heroRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 1.5,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none none",
-      },
-    });
-  }, []);
 
     // Fetch contests with react-query
     const { data: contests = [], isLoading, isError, error } = useQuery({

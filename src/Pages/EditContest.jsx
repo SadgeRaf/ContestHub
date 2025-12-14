@@ -36,7 +36,7 @@ const CreatorContests = () => {
         if (!window.confirm('Are you sure you want to delete this contest?')) return;
 
         try {
-            await axiosSecure.delete(`/creator/contests/${id}`);
+            await axiosSecure.delete(`/creator/contest/${id}`);
             toast.success('Contest deleted!');
             refetch();
         } catch (err) {
@@ -47,7 +47,7 @@ const CreatorContests = () => {
 
     const onSubmit = async (formData) => {
         try {
-            await axiosSecure.patch(`/creator/contests/${editingContest._id}`, formData);
+            await axiosSecure.patch(`/creator/contest/${editingContest._id}`, formData);
             toast.success('Contest updated successfully!');
             setEditingContest(null);
             refetch();

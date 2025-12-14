@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
@@ -7,7 +7,7 @@ import { AuthContext } from '../Provider/AuthProvider';
 const Contest = () => {
   const { id } = useParams();
   const axiosSecure = useAxios();
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const { data: contest, isLoading, isError, error } = useQuery({
     queryKey: ['contest', id],
@@ -27,9 +27,9 @@ const Contest = () => {
   });
 
   const alreadyRegistered = registration?.contestStatus === 'registered';
-
   const [timeLeft, setTimeLeft] = useState('');
   const [isEnded, setIsEnded] = useState(false);
+  const [winnerData, setWinnerData] = useState(null);
 
   // Countdown effect
   useEffect(() => {
@@ -42,7 +42,7 @@ const Contest = () => {
 
       if (distance <= 0) {
         setTimeLeft('Contest ended');
-        setIsEnded(true); // disable the payment button
+        setIsEnded(true);
         clearInterval(countdown);
         return;
       }
@@ -58,7 +58,19 @@ const Contest = () => {
     return () => clearInterval(countdown);
   }, [contest?.deadline]);
 
+  // Fetch winner info if winner exists
+  useEffect(() => {
+    if (contest?.winner) {
+      axiosSecure
+        .get(`/users?email=${contest.winner}`)
+        .then(res => setWinnerData(res.data[0]))
+        .catch(err => console.error(err));
+    }
+  }, [contest?.winner, axiosSecure]);
+
   const handlePayment = async () => {
+    if (!contest) return;
+
     const paymentInfo = {
       fee: contest.registrationFee,
       name: contest.name,
@@ -79,7 +91,7 @@ const Contest = () => {
   if (isError) return <p className="text-center mt-10 text-red-500">{error.message}</p>;
   if (!contest) return <p className="text-center mt-10">Contest not found.</p>;
 
-  const isClosed = contest.status === "ended" || isEnded;
+  const isClosed = contest.contestStatus === 'completed' || isEnded;
 
   return (
     <div className="max-w-4xl mx-auto mt-25 px-4 mb-10">
@@ -101,13 +113,13 @@ const Contest = () => {
         <p>{contest.description}</p>
       </div>
 
-      {/* Winner */}
-      {contest.winner && (
+      {/* Winner Section */}
+      {winnerData && (
         <div className="mb-6 p-4 border rounded-lg">
           <h2 className="text-xl font-semibold mb-2">Winner</h2>
           <div className="flex items-center gap-4">
-            <img src={contest.winner.photo} alt={contest.winner.name} className="w-16 h-16 rounded-full object-cover" />
-            <p className="text-lg font-semibold">{contest.winner.name}</p>
+            <img src={winnerData.photo} alt={winnerData.name} className="w-16 h-16 rounded-full object-cover" />
+            <p className="text-lg font-semibold">{winnerData.name}</p>
           </div>
         </div>
       )}
@@ -116,7 +128,7 @@ const Contest = () => {
       {alreadyRegistered ? (
         <button className="btn btn-disabled">Already Registered</button>
       ) : isClosed ? (
-        <button className="btn btn-disabled">It's over</button>
+        <button className="btn btn-disabled">Contest Closed</button>
       ) : (
         <button onClick={handlePayment} className="btn">
           Pay {contest.registrationFee}$ to register
