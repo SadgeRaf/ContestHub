@@ -25,7 +25,7 @@ const AddContest = () => {
       banner: data.banner,
       type: data.type,
       participants: 0,
-      registrationFee: Number(data.registrationFee),   // added
+      registrationFee: Number(data.registrationFee),
       description: data.description,
       taskDetails: data.taskDetails,
       prize: Number(data.prize),

@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import { AuthContext } from '../Provider/AuthProvider';
+import Loading from '../Pages/Loading';
 
 const Contest = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const Contest = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/registered/single?contestId=${id}&email=${user.email}`);
-      return res.data; // null if not registered
+      return res.data; 
     },
   });
 
@@ -87,7 +88,7 @@ const Contest = () => {
     }
   };
 
-  if (isLoading) return <p className="text-center mt-10">Loading contest...</p>;
+  if (isLoading) return <Loading></Loading>
   if (isError) return <p className="text-center mt-10 text-red-500">{error.message}</p>;
   if (!contest) return <p className="text-center mt-10">Contest not found.</p>;
 

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 import { toast } from "react-toastify";
@@ -6,10 +6,11 @@ import useRole from "../hooks/useRole";
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
-    const {role} = useRole();
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const { role } = useRole();
     const handleLogout = () => {
         logOut()
-            .then(() => {})
+            .then(() => { })
             .catch(err => toast.error(err));
     };
 
@@ -26,6 +27,16 @@ const Navbar = () => {
         </>
     );
 
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
+
+    const handleTheme = (checked) => {
+        setTheme(checked ? 'dark' : 'light')
+    }
+
     return (
         <div className="navbar absolute bg-transparent shadow-md top-0 left-0 w-full z-50">
             {/* LEFT */}
@@ -35,7 +46,7 @@ const Navbar = () => {
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                  d="M4 6h16M4 12h16M4 18h16"/>
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </div>
 
@@ -64,6 +75,10 @@ const Navbar = () => {
                     </div>
                 )}
 
+                <input onChange={(e) => handleTheme(e.target.checked)} type="checkbox"
+                            defaultChecked={localStorage.getItem('theme') === 'dark'}
+                            className="toggle mr-4" />
+
                 {/* Mobile buttons (stacked in dropdown) */}
                 {!user && (
                     <div className="dropdown dropdown-end lg:hidden">
@@ -86,6 +101,8 @@ const Navbar = () => {
                                 />
                             </div>
                         </label>
+
+                        
 
                         <ul tabIndex={0}
                             className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">

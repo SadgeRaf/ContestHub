@@ -22,6 +22,7 @@ import ContestApproval from "../Pages/ContestApproval"
 import AdminRoute from "../Provider/AdminRoute"
 import EditContest from "../Pages/EditContest"
 import PickWinner from "../Pages/PickWinner"
+import DashboardHome from "../Pages/DashboardHome"
 
 const router = createBrowserRouter(
     [
@@ -66,6 +67,11 @@ const router = createBrowserRouter(
             path: '/dashboard',
             element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
             children: [
+                {
+                    path: '',
+                    element: <DashboardHome></DashboardHome>
+
+                },
                 {
                     path: 'success',
                     element: <DashboardSuccess></DashboardSuccess>

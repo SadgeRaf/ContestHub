@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import Card from '../Components/Card';
 import { Link } from 'react-router';
+import Loading from './Loading';
 
 const AllContests = () => {
   const axiosSecure = useAxios();
@@ -18,7 +19,7 @@ const AllContests = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center mt-20 text-lg font-medium">Loading contests...</p>;
+  if (isLoading) return <Loading></Loading>
   if (isError) return <p className="text-center mt-20 text-red-500 text-lg font-medium">Error: {error.message}</p>;
   if (contests.length === 0) return <p className="text-center mt-20 text-lg font-medium">No contests available.</p>;
 

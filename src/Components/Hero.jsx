@@ -4,6 +4,9 @@ import { ScrollTrigger } from "gsap/all";
 import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import Typewriter from "typewriter-effect";
+
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,8 +51,27 @@ const Hero = () => {
             <div className="hero-content text-center text-neutral-content">
                 <div className="max-w-2xl">
                     <h1 className="mb-5 text-6xl font-bold drop-shadow-xl">
-                        Find Your Next Contest
+                        Find Your Next{" "}
+                        <span className="text-primary">
+                            <Typewriter
+                                options={{
+                                    strings: [
+                                        "Contest",
+                                        "Challenge",
+                                        "Battle",
+                                        "Opportunity",
+                                        "Victory",
+                                    ],
+                                    autoStart: true,
+                                    loop: true,
+                                    delay: 70,
+                                    deleteSpeed: 40,
+                                }}
+                            />
+                        </span>
                     </h1>
+
+
 
                     <p className="mb-8 text-lg opacity-90">
                         Search contests by type — programming, math, robotics, esports, and more.
