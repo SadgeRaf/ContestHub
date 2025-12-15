@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxios from "../hooks/useAxios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddContest = () => {
   const axiosSecure = useAxios();
   const [loading, setLoading] = useState(false);
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
 
   const {
     register,
@@ -17,8 +17,6 @@ const AddContest = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    setSuccessMsg("");
-    setErrorMsg("");
 
     const contestData = {
       name: data.name,
@@ -33,17 +31,17 @@ const AddContest = () => {
       winner: null,
       submissions: [],
       registeredUsers: [],
-      contestStatus: 'open'
+      contestStatus: "open",
     };
 
     try {
       const res = await axiosSecure.post("/addcontest", contestData);
       console.log("Response:", res.data);
-      setSuccessMsg("Contest created successfully!");
+      toast.success("Contest created successfully!");
       reset();
     } catch (err) {
       console.error("Error creating contest:", err);
-      setErrorMsg(err.response?.data?.message || err.message || "Error occurred");
+      toast.error(err.response?.data?.message || err.message || "Error occurred");
     } finally {
       setLoading(false);
     }
@@ -52,13 +50,6 @@ const AddContest = () => {
   return (
     <div className="max-w-3xl mx-auto mt-20 mb-10 p-6 shadow-lg rounded-xl bg-base-200">
       <h1 className="text-3xl font-bold mb-6 text-center">Create New Contest</h1>
-
-      {successMsg && (
-        <p className="text-green-500 text-center mb-4">{successMsg}</p>
-      )}
-      {errorMsg && (
-        <p className="text-red-500 text-center mb-4">{errorMsg}</p>
-      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 

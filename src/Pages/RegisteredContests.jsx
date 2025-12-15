@@ -1,16 +1,14 @@
-import React, { useState, use } from "react";
+import React, { useState, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../hooks/useAxios";
 import { AuthContext } from "../Provider/AuthProvider";
 import { useForm } from "react-hook-form";
 import SubmissionModal from "../Components/SubmissionModal";
-import { Link } from "react-router";
 
 const ParticipatedContests = () => {
   const axiosSecure = useAxios();
-  const { user } = use(AuthContext);
+  const { user } = useContext(AuthContext); // fixed
 
-  // Fetch registered contests (payment data + registration info)
   const {
     data: registered = [],
     isLoading,
@@ -26,7 +24,6 @@ const ParticipatedContests = () => {
     },
   });
 
-  // Fetch all contests for mapping contestId → contest details
   const { data: allContests = [] } = useQuery({
     queryKey: ["allContests"],
     queryFn: async () => {
@@ -35,7 +32,6 @@ const ParticipatedContests = () => {
     },
   });
 
-  // Join: registered items + real contest info
   const joinedData = registered
     .map((item) => {
       const contest = allContests.find((c) => c._id === item.contestId);
@@ -46,7 +42,7 @@ const ParticipatedContests = () => {
         fee: contest?.registrationFee || 0,
       };
     })
-    .sort((a, b) => new Date(a.deadline) - new Date(b.deadline)); // SORT: upcoming
+    .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
   const { register, handleSubmit, reset } = useForm();
   const [selectedId, setSelectedId] = useState(null);
@@ -84,68 +80,69 @@ const ParticipatedContests = () => {
     );
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 px-4">
-      <h1 className="text-3xl font-bold mb-6">My Participated Contests</h1>
+    <div className="max-w-6xl mx-auto mt-10 px-4">
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        My Participated Contests
+      </h1>
 
-      <table className="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="">
-            <th className="border px-4 py-2">#</th>
-            <th className="border px-4 py-2">Contest</th>
-            <th className="border px-4 py-2">Deadline</th>
-            <th className="border px-4 py-2">Payment</th>
-            <th className="border px-4 py-2">Submission</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {joinedData.map((item, index) => (
-            <tr key={item._id}>
-              <td className="border px-4 py-2">{index + 1}</td>
-
-              <td className="border px-4 py-2 font-semibold">
-                {item.contestName}
-              </td>
-
-              <td className="border px-4 py-2">
-                {item.deadline
-                  ? new Date(item.deadline).toLocaleDateString()
-                  : "N/A"}
-              </td>
-
-              <td className="border px-4 py-2">
-                <span className="badge badge-success">Paid</span>
-              </td>
-
-              <td className="border px-4 py-2">
-                {item.contestStatus === "submitted" ? (
-                  <button
-                    className="btn btn-sm bg-gray-400 text-white"
-                    disabled
-                  >
-                    Submitted
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => openModal(item._id)}
-                    className="btn btn-sm btn-primary"
-                  >
-                    Submit
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-
-          {!joinedData.length && (
+      {/* Responsive wrapper */}
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full border-collapse border border-gray-300 min-w-[600px]">
+          <thead className="bg-gray-100">
             <tr>
-              <td colSpan="5" className="text-center py-4">
-                You have not registered for any contests.
-              </td>
+              <th className="border px-4 py-2 text-left">#</th>
+              <th className="border px-4 py-2 text-left">Contest</th>
+              <th className="border px-4 py-2 text-left">Deadline</th>
+              <th className="border px-4 py-2 text-left">Payment</th>
+              <th className="border px-4 py-2 text-left">Submission</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {joinedData.map((item, index) => (
+              <tr key={item._id} className="hover:bg-gray-50">
+                <td className="border px-4 py-2">{index + 1}</td>
+                <td className="border px-4 py-2 font-semibold whitespace-normal">
+                  {item.contestName}
+                </td>
+                <td className="border px-4 py-2">
+                  {item.deadline
+                    ? new Date(item.deadline).toLocaleDateString()
+                    : "N/A"}
+                </td>
+                <td className="border px-4 py-2">
+                  <span className="badge badge-success">Paid</span>
+                </td>
+                <td className="border px-4 py-2">
+                  {item.contestStatus === "submitted" ? (
+                    <button
+                      className="btn btn-sm bg-gray-400 text-white"
+                      disabled
+                    >
+                      Submitted
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => openModal(item._id)}
+                      className="btn btn-sm btn-primary"
+                    >
+                      Submit
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+
+            {!joinedData.length && (
+              <tr>
+                <td colSpan="5" className="text-center py-4">
+                  You have not registered for any contests.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       <SubmissionModal onSubmit={onSubmit} register={register} />
     </div>

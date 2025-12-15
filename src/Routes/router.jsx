@@ -23,6 +23,7 @@ import AdminRoute from "../Provider/AdminRoute"
 import EditContest from "../Pages/EditContest"
 import PickWinner from "../Pages/PickWinner"
 import DashboardHome from "../Pages/DashboardHome"
+import LeaderBoard from "../Pages/LeadorBoard"
 
 const router = createBrowserRouter(
     [
@@ -59,6 +60,10 @@ const router = createBrowserRouter(
                     element:<PrivateRoute>
                         <Creator></Creator>
                     </PrivateRoute>
+                },
+                {
+                    path:'leaderboard',
+                    element: <LeaderBoard></LeaderBoard>
                 }
 
             ]

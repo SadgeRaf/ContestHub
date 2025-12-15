@@ -12,7 +12,7 @@ const WinningContest = () => {
     queryKey: ['winners', user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/winners?email=${user.email}`);
+      const res = await axiosSecure.get(`/winners?winnerEmail=${user.email}`);
       return res.data;
     },
   });
