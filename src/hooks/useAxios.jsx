@@ -3,7 +3,7 @@ import { use, useEffect } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://contest-hub-server-pied.vercel.app",
 });
 
 const useAxios = () => {
