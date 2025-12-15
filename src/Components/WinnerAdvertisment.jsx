@@ -48,7 +48,7 @@ const WinnerAdvertisement = () => {
   const { data: winners = [] } = useQuery({
     queryKey: ["winners"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/winners");
+      const res = await axiosSecure.get("/winners/all");
       return res.data;
     },
   });
