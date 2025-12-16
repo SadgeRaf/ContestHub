@@ -63,14 +63,12 @@ const WinnerAdvertisement = () => {
       ref={containerRef}
       className="relative py-20 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 overflow-hidden"
     >
-      {/* Glow blobs */}
       <div className="absolute inset-0">
         <div className="absolute top-10 left-1/3 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-1/3 w-72 h-72 bg-pink-600/20 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
-        {/* Quote */}
         <div className="mb-12">
           <Sparkles className="w-8 h-8 mx-auto mb-4 text-yellow-400" />
           <h2 className="text-3xl md:text-5xl font-bold leading-tight">
@@ -81,7 +79,6 @@ const WinnerAdvertisement = () => {
           </p>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10">
           <div
             ref={(el) => (statsRef.current[0] = el)}
@@ -108,7 +105,6 @@ const WinnerAdvertisement = () => {
           </div>
         </div>
 
-        {/* CTA */}
         <div className="mt-14">
           <p className="text-lg text-white/70 mb-4">
             The next success story could be yours.

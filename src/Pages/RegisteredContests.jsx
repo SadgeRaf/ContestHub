@@ -7,7 +7,7 @@ import SubmissionModal from "../Components/SubmissionModal";
 
 const ParticipatedContests = () => {
   const axiosSecure = useAxios();
-  const { user } = useContext(AuthContext); // fixed
+  const { user } = useContext(AuthContext);
 
   const {
     data: registered = [],

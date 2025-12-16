@@ -40,9 +40,9 @@ const Navbar = () => {
 
     return (
         <div className="navbar absolute bg-transparent shadow-md top-0 left-0 w-full z-50">
-            {/* LEFT */}
+            
             <div className="navbar-start">
-                {/* MOBILE DROPDOWN */}
+                
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,14 +60,14 @@ const Navbar = () => {
                 <Link to="/" className="btn btn-ghost text-xl">ContestHub</Link>
             </div>
 
-            {/* CENTER (Desktop Menu) */}
+            
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     {navItems}
                 </ul>
             </div>
 
-            {/* RIGHT — LOGIN / REGISTER / AVATAR */}
+            
             <div className="navbar-end">
                 {!user && (
                     <div className="space-x-2 hidden sm:flex">
@@ -80,7 +80,7 @@ const Navbar = () => {
                             defaultChecked={localStorage.getItem('theme') === 'dark'}
                             className="toggle mr-4" />
 
-                {/* Mobile buttons (stacked in dropdown) */}
+                
                 {!user && (
                     <div className="dropdown dropdown-end lg:hidden">
                         <label tabIndex={0} className="btn btn-ghost btn-sm">Account</label>

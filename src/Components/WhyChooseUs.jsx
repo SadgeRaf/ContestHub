@@ -34,7 +34,6 @@ const WhyChooseUs = () => {
   ];
 
   useGSAP(() => {
-    // Kill any existing ScrollTriggers first
     ScrollTrigger.getAll().forEach(trigger => {
       if (trigger.trigger === containerRef.current) {
         trigger.kill();
@@ -46,14 +45,13 @@ const WhyChooseUs = () => {
 
     const totalWidth = (boxes.length - 1) * 100;
 
-    // Horizontal scroll animation
     gsap.to(boxes, {
       xPercent: -totalWidth,
       ease: "none",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: "+=400%", // Slightly increased for smoother transition
+        end: "+=400%", 
         scrub: true,
         pin: true,
         anticipatePin: 1,
@@ -67,11 +65,9 @@ const WhyChooseUs = () => {
           setActiveIndex(index);
         },
         invalidateOnRefresh: true,
-        markers: false // Set to true for debugging
       }
     });
 
-    // Text animation
     gsap.fromTo(
       '.text-container',
       { opacity: 0, y: 30 },
@@ -93,7 +89,7 @@ const WhyChooseUs = () => {
     <section ref={containerRef} className="relative w-full min-h-screen">
       <div className="container mx-auto px-4 h-full">
         <div className="flex flex-col lg:flex-row items-center h-full min-h-screen">
-          {/* Left Text Section */}
+
           <div className="lg:w-1/2 text-container p-8 lg:p-12">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
               Why Choose <span className="text-blue-600">Us?</span>
@@ -102,7 +98,7 @@ const WhyChooseUs = () => {
               We provide the best platform for gamers to practice, compete, and win amazing prizes.
             </p>
             
-            {/* Active Reason Display */}
+
             <div className="mt-8">
               <div className="text-sm text-gray-500 mb-2">
                 {activeIndex + 1} / {reasons.length}
@@ -115,13 +111,12 @@ const WhyChooseUs = () => {
               </p>
             </div>
 
-            {/* Indicator Dots */}
+
             <div className="flex space-x-2 mt-8">
               {reasons.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => {
-                    // Optional: Add click to scroll functionality
                     const scrollAmount = index * (window.innerHeight * 1.2);
                     window.scrollTo({
                       top: containerRef.current.offsetTop + scrollAmount,
@@ -139,7 +134,6 @@ const WhyChooseUs = () => {
             </div>
           </div>
 
-          {/* Right Scroll Section */}
           <div className="lg:w-1/2 h-full flex items-center">
             <div className="relative w-full h-[400px] lg:h-[500px] overflow-hidden rounded-2xl shadow-2xl">
               <div
@@ -167,8 +161,7 @@ const WhyChooseUs = () => {
                   </div>
                 ))}
               </div>
-              
-              {/* Scroll hint */}
+
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/70 text-sm">
                 Scroll to continue →
               </div>
