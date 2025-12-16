@@ -9,7 +9,7 @@ const AllContests = () => {
   const axiosSecure = useAxios();
   const [filterType, setFilterType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // number of contests per page
+  const itemsPerPage = 6; 
 
   const { data: contests = [], isLoading, isError, error } = useQuery({
     queryKey: ["contests"],
@@ -25,12 +25,10 @@ const AllContests = () => {
 
   const contestTypes = ["all", ...new Set(contests.map(c => c.type))];
 
-  // Filter contests by selected type
   const filteredContests = filterType === 'all'
     ? contests
     : contests.filter(c => c.type === filterType);
 
-  // Pagination calculation
   const totalPages = Math.ceil(filteredContests.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentContests = filteredContests.slice(startIndex, startIndex + itemsPerPage);
@@ -38,7 +36,7 @@ const AllContests = () => {
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top when page changes
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
   };
 
   return (
@@ -55,7 +53,7 @@ const AllContests = () => {
           value={filterType}
           onChange={(e) => {
             setFilterType(e.target.value);
-            setCurrentPage(1); // reset page on filter change
+            setCurrentPage(1); 
           }}
         >
           {contestTypes.map((type) => (

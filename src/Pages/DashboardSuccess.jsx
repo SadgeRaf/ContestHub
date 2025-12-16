@@ -6,7 +6,7 @@ const DashboardSuccess = () => {
     const axiosSecure = useAxios();
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get('session_id');
-    const calledRef = useRef(false); // track if effect has run
+    const calledRef = useRef(false); 
 
     useEffect(() => {
         if(sessionId && !calledRef.current){

@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
-import useAxios from '../hooks/useAxios';
-import { AuthContext } from '../Provider/AuthProvider';
-import Loading from '../Pages/Loading';
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import useAxios from "../hooks/useAxios";
+import { AuthContext } from "../Provider/AuthProvider";
+import Loading from "../Pages/Loading";
+import SubmissionModal from "../Components/SubmissionModal";
 
 const Contest = () => {
   const { id } = useParams();
@@ -11,7 +13,7 @@ const Contest = () => {
   const { user } = useContext(AuthContext);
 
   const { data: contest, isLoading, isError, error } = useQuery({
-    queryKey: ['contest', id],
+    queryKey: ["contest", id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/contest/${id}`);
       return res.data;
@@ -19,18 +21,25 @@ const Contest = () => {
   });
 
   const { data: registration } = useQuery({
-    queryKey: ['registration', id, user?.email],
+    queryKey: ["registration", id, user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/registered/single?contestId=${id}&email=${user.email}`);
-      return res.data; 
+      const res = await axiosSecure.get(
+        `/registered/single?contestId=${id}&email=${user.email}`
+      );
+      return res.data;
     },
   });
 
-  const alreadyRegistered = registration?.contestStatus === 'registered';
-  const [timeLeft, setTimeLeft] = useState('');
+  const alreadyRegistered = registration?.contestStatus === "registered";
+  const hasSubmitted = registration?.contestStatus === "submitted";
+
+  const [timeLeft, setTimeLeft] = useState("");
   const [isEnded, setIsEnded] = useState(false);
   const [winnerData, setWinnerData] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const { register, handleSubmit, reset } = useForm();
 
   // Countdown effect
   useEffect(() => {
@@ -42,14 +51,16 @@ const Contest = () => {
       const distance = deadlineTime - now;
 
       if (distance <= 0) {
-        setTimeLeft('Contest ended');
+        setTimeLeft("Contest ended");
         setIsEnded(true);
         clearInterval(countdown);
         return;
       }
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -64,10 +75,27 @@ const Contest = () => {
     if (contest?.winner) {
       axiosSecure
         .get(`/users?email=${contest.winner}`)
-        .then(res => setWinnerData(res.data[0]))
-        .catch(err => console.error(err));
+        .then((res) => setWinnerData(res.data[0]))
+        .catch((err) => console.error(err));
     }
   }, [contest?.winner, axiosSecure]);
+
+  const onSubmit = handleSubmit(async (data) => {
+    const payload = {
+      submissionText: data.submissionText,
+      submittedAt: new Date(),
+    };
+
+    await axiosSecure.patch(`/registered/submit/${registration._id}`, payload);
+    alert("Submission uploaded!");
+    reset();
+    document.getElementById("submit_modal").close();
+  });
+
+  const openModal = () => {
+    setSelectedId(registration._id);
+    document.getElementById("submit_modal").showModal();
+  };
 
   const handlePayment = async () => {
     if (!contest) return;
@@ -88,25 +116,45 @@ const Contest = () => {
     }
   };
 
-  if (isLoading) return <Loading></Loading>
-  if (isError) return <p className="text-center mt-10 text-red-500">{error.message}</p>;
+  if (isLoading) return <Loading />;
+  if (isError)
+    return (
+      <p className="text-center mt-10 text-red-500">{error.message}</p>
+    );
   if (!contest) return <p className="text-center mt-10">Contest not found.</p>;
 
-  const isClosed = contest.contestStatus === 'completed' || isEnded;
+  const isClosed = contest.contestStatus === "completed" || isEnded;
+  const canRegister = !alreadyRegistered && !isClosed && !contest.winner;
 
   return (
     <div className="max-w-4xl mx-auto mt-25 px-4 mb-10">
       {/* Banner */}
       <div className="w-full h-64 md:h-96 overflow-hidden rounded-xl mb-6">
-        <img src={contest.banner} alt={contest.name} className="w-full h-full object-cover" />
+        <img
+          src={contest.banner}
+          alt={contest.name}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Contest Info */}
       <h1 className="text-3xl font-bold mb-4">{contest.name}</h1>
-      <p className="text-gray-700 mb-2">Prize: <span className="font-semibold">{contest.prize}</span></p>
-      <p className="text-gray-700 mb-2">Participants: <span className="font-semibold">{contest.participants}</span></p>
-      <p className="text-gray-700 mb-4">Deadline: <span className="font-semibold">{contest.deadline}</span></p>
-      <p className={`mb-4 font-semibold ${isEnded ? 'text-red-500' : 'text-green-600'}`}>Time left: {timeLeft}</p>
+      <p className="text-gray-700 mb-2">
+        Prize: <span className="font-semibold">{contest.prize}</span>
+      </p>
+      <p className="text-gray-700 mb-2">
+        Participants: <span className="font-semibold">{contest.participants}</span>
+      </p>
+      <p className="text-gray-700 mb-4">
+        Deadline: <span className="font-semibold">{contest.deadline}</span>
+      </p>
+      <p
+        className={`mb-4 font-semibold ${
+          isEnded ? "text-red-500" : "text-green-600"
+        }`}
+      >
+        Time left: {timeLeft}
+      </p>
 
       {/* Description & Task */}
       <div className="mb-6">
@@ -119,21 +167,36 @@ const Contest = () => {
         <div className="mb-6 p-4 border rounded-lg">
           <h2 className="text-xl font-semibold mb-2">Winner</h2>
           <div className="flex items-center gap-4">
-            <img src={winnerData.photo} alt={winnerData.name} className="w-16 h-16 rounded-full object-cover" />
+            <img
+              src={winnerData.photo}
+              alt={winnerData.name}
+              className="w-16 h-16 rounded-full object-cover"
+            />
             <p className="text-lg font-semibold">{winnerData.name}</p>
           </div>
         </div>
       )}
 
-      {/* Payment / Registration Button */}
+      {/* Payment / Submission Buttons */}
       {alreadyRegistered ? (
-        <button className="btn btn-disabled">Already Registered</button>
-      ) : isClosed ? (
-        <button className="btn btn-disabled">Contest Closed</button>
-      ) : (
+        hasSubmitted ? (
+          <button className="btn btn-disabled">Already Submitted</button>
+        ) : (
+          <button onClick={openModal} className="btn btn-primary">
+            Submit Entry
+          </button>
+        )
+      ) : canRegister ? (
         <button onClick={handlePayment} className="btn">
           Pay {contest.registrationFee}$ to register
         </button>
+      ) : (
+        <button className="btn btn-disabled">Contest Closed</button>
+      )}
+
+      {/* Submission Modal */}
+      {alreadyRegistered && !hasSubmitted && (
+        <SubmissionModal onSubmit={onSubmit} register={register} />
       )}
     </div>
   );

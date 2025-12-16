@@ -23,9 +23,6 @@ const Login = () => {
     formState: { errors }
   } = useForm();
 
-  // =========================================
-  // EMAIL/PASSWORD LOGIN
-  // =========================================
   const handleLogin = async (data) => {
     const { email, password } = data;
 
@@ -42,15 +39,11 @@ const Login = () => {
     }
   };
 
-  // =========================================
-  // GOOGLE LOGIN
-  // =========================================
   const handleGoogle = async () => {
     try {
       const res = await googleSignUp();
       const user = res.user;
 
-      // Save Google user to DB
       const savedUser = {
         name: user.displayName,
         email: user.email,

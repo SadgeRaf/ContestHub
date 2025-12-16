@@ -126,7 +126,6 @@ const CreatorContests = () => {
         </div>
       </section>
 
-      {/* ================= Active / Approved Contests ================= */}
       <section>
         <h2 className="text-2xl font-semibold mb-4">
           Active & Completed Contests
@@ -165,7 +164,6 @@ const CreatorContests = () => {
         </div>
       </section>
 
-      {/* ================= Edit Form ================= */}
       {editingContest && (
         <section className="border p-6 rounded bg-gray-50">
           <h2 className="text-xl font-bold mb-4">

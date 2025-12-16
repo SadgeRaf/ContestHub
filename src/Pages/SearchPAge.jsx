@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../hooks/useAxios";
-import Card from "../Components/Card"; // import your Card component
+import Card from "../Components/Card";
 
 const SearchPage = () => {
     const { query } = useParams();
