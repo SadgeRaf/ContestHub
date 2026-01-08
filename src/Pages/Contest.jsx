@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router"; // Added useNavigate
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useAxios from "../hooks/useAxios";
@@ -11,6 +11,7 @@ const Contest = () => {
   const { id } = useParams();
   const axiosSecure = useAxios();
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate(); // Added navigate hook
 
   const { data: contest, isLoading, isError, error } = useQuery({
     queryKey: ["contest", id],
@@ -98,6 +99,12 @@ const Contest = () => {
   };
 
   const handlePayment = async () => {
+    // Check if user is logged in
+    if (!user) {
+      navigate("/auth/login"); // Redirect to login page
+      return;
+    }
+    
     if (!contest) return;
 
     const paymentInfo = {

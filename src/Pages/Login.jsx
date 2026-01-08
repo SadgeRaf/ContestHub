@@ -24,7 +24,13 @@ const Login = () => {
   } = useForm();
 
   const handleLogin = async (data) => {
-    const { email, password } = data;
+    const email = data.email || data.target?.email?.value;
+    const password = data.password || data.target?.password?.value;
+
+    if (!email || !password) {
+      toast.error("Email and password are required");
+      return;
+    }
 
     try {
       const res = await logIn(email, password);
@@ -70,7 +76,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 mt-20">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-sm p-8 border border-gray-200">
-        
+
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Welcome Back
         </h2>
@@ -140,6 +146,36 @@ const Login = () => {
             Login
           </button>
         </form>
+
+        {/* ADMIN AUTOFILL */}
+        <button
+          type="button"
+          onClick={() => {
+            const adminData = {
+              email: "guy@gmail.com",
+              password: "Iamaguy"
+            };
+            handleLogin(adminData);
+          }}
+          className="btn w-full mt-2 flex items-center gap-2"
+        >
+          Autofill Admin
+        </button>
+
+        {/* USER AUTOFILL */}
+        <button
+          type="button"
+          onClick={() => {
+            const userData = {
+              email: "man@gmail.com",
+              password: "Iamaman"
+            };
+            handleLogin(userData);
+          }}
+          className="btn w-full mt-2 flex items-center gap-2"
+        >
+          Autofill User
+        </button>
 
         {/* SIGN UP LINK */}
         <p className="text-center text-sm text-gray-500 mt-6">

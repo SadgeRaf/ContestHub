@@ -24,6 +24,9 @@ import EditContest from "../Pages/EditContest"
 import PickWinner from "../Pages/PickWinner"
 import DashboardHome from "../Pages/DashboardHome"
 import LeaderBoard from "../Pages/LeadorBoard"
+import Terms from "../Components/Terms"
+import Contact from "../Components/Contact"
+import Privacy from "../Pages/Privacy"
 
 const router = createBrowserRouter(
     [
@@ -41,9 +44,7 @@ const router = createBrowserRouter(
                 },
                 {
                     path: `contest/:id`,
-                    element: <PrivateRoute>
-                        <Contest></Contest>
-                    </PrivateRoute>
+                    element: <Contest></Contest>      
                 },
                 {
                     path: 'addcontest',
@@ -64,7 +65,20 @@ const router = createBrowserRouter(
                 {
                     path:'leaderboard',
                     element: <LeaderBoard></LeaderBoard>
-                }
+                },
+                {
+                    path:'terms',
+                    element: <Terms></Terms>
+                },
+                {
+                    path:'contact',
+                    element: <Contact></Contact>
+                },
+                {
+                    path:'privacy',
+                    element: <Privacy></Privacy>
+                },
+                
 
             ]
         },

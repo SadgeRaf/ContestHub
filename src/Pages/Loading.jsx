@@ -14,7 +14,7 @@ const Loading = () => {
         Loading....
       </h1>
       <p className="text-base-content/60 animate-pulse">
-        Preparing something awesome for you 🚀
+        Preparing something awesome for you
       </p>
     </div>
   );
