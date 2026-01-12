@@ -61,7 +61,7 @@ const WinnerAdvertisement = () => {
   return (
     <section
       ref={containerRef}
-      className="relative py-20 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 overflow-hidden"
+      className="relative py-20 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 overflow-hidden rounded-2xl"
     >
       <div className="absolute inset-0">
         <div className="absolute top-10 left-1/3 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl" />
@@ -70,7 +70,7 @@ const WinnerAdvertisement = () => {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
         <div className="mb-12">
-          <Sparkles className="w-8 h-8 mx-auto mb-4 text-yellow-400" />
+          
           <h2 className="text-3xl md:text-5xl font-bold leading-tight">
             “{quote}”
           </h2>

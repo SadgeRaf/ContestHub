@@ -36,7 +36,7 @@ const LeaderBoard = () => {
       <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
-            <tr className="bg-gray-100">
+            <tr>
               <th className="border px-4 py-2">#</th>
               <th className="border px-4 py-2">Contest</th>
               <th className="border px-4 py-2">Winner</th>

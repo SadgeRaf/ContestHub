@@ -64,7 +64,7 @@ const Home = () => {
             {/* Section 2: Stats Bar - Using real data */}
             <div className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-900/30 dark:via-purple-900/30 dark:to-pink-900/30 py-8 border-y border-gray-200 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="flex justify-around gap-6">
                         <div className="text-center">
                             <div className="flex items-center justify-center gap-2 mb-2">
                                 <Trophy className="w-5 h-5 text-yellow-500" />
@@ -72,13 +72,7 @@ const Home = () => {
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-300">Winners Crowned</p>
                         </div>
-                        <div className="text-center">
-                            <div className="flex items-center justify-center gap-2 mb-2">
-                                <Users className="w-5 h-5 text-blue-500" />
-                                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{totalParticipants || 0}</h3>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">Total Participants</p>
-                        </div>
+                        
                         <div className="text-center">
                             <div className="flex items-center justify-center gap-2 mb-2">
                                 <CalendarDays className="w-5 h-5 text-green-500" />
@@ -106,20 +100,20 @@ const Home = () => {
             <div id="contests-section" className="max-w-7xl mx-auto px-4 py-12">
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center gap-2 mb-4">
-                        <Trophy className="w-6 h-6 text-yellow-500" />
+
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
                             All Active Contests
                         </h2>
-                        <Trophy className="w-6 h-6 text-yellow-500" />
+
                     </div>
                     <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
                         Browse through all our active contests and find the perfect challenge for you
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {contests.length > 0 ? (
-                        contests.slice(0, 6).map((contest, index) => (
+                        contests.slice(0, 4).map((contest) => (
                             <div key={contest._id} className="group">
                                 <div className="transform transition-all duration-300 group-hover:-translate-y-2">
                                     <Card contest={contest} />
@@ -238,8 +232,8 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {popularContests.slice(0, 3).map((contest) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {popularContests.slice(0, 4).map((contest) => (
                             <div key={contest._id} className="group">
                                 <div className="relative overflow-hidden rounded-xl">
                                     <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
@@ -275,8 +269,8 @@ const Home = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {endingSoonContests.slice(0, 3).map((contest) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {endingSoonContests.slice(0, 4).map((contest) => (
                                 <div key={contest._id} className="relative">
                                     <div className="absolute inset-0 bg-gradient-to-t from-red-500/10 to-transparent rounded-xl pointer-events-none"></div>
                                     <Card contest={contest} />

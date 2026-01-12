@@ -88,7 +88,7 @@ const ParticipatedContests = () => {
       {/* Responsive wrapper */}
       <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-gray-300 min-w-[600px]">
-          <thead className="bg-gray-100">
+          <thead>
             <tr>
               <th className="border px-4 py-2 text-left">#</th>
               <th className="border px-4 py-2 text-left">Contest</th>

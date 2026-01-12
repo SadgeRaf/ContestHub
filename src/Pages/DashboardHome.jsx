@@ -406,49 +406,7 @@ const DashboardHome = () => {
         </div>
       )}
 
-      {/* Quick Actions */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {user?.role === 'admin' ? (
-            <>
-              <button className="btn btn-primary dark:bg-purple-600 dark:text-white dark:hover:bg-purple-700">
-                Review Pending Approvals
-              </button>
-              <button className="btn btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                Platform Analytics
-              </button>
-              <button className="btn btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                User Management
-              </button>
-            </>
-          ) : user?.role === 'creator' ? (
-            <>
-              <button className="btn btn-primary dark:bg-purple-600 dark:text-white dark:hover:bg-purple-700">
-                Create New Contest
-              </button>
-              <button className="btn btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                View Pending Judging
-              </button>
-              <button className="btn btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                Analytics Report
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="btn btn-primary dark:bg-purple-600 dark:text-white dark:hover:bg-purple-700">
-                Browse New Contests
-              </button>
-              <button className="btn btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                View My Submissions
-              </button>
-              <button className="btn btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                Check Rankings
-              </button>
-            </>
-          )}
-        </div>
-      </div>
+   
 
       {/* Empty State if no data */}
       {!userStats.totalUsers && !userStats.totalWins && !userStats.myContests?.length && (
